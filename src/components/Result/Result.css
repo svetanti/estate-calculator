@@ -1,0 +1,25 @@
+.result {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 50%;
+  justify-items: stretch;
+  align-items: stretch;
+  height: min-content;
+  margin-top: 34px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+.result__heading {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.result__values {
+  font-size: 18px;
+  margin: 20px 0;
+}
