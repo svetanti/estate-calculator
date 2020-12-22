@@ -1,56 +1,136 @@
 import React from 'react';
-import { Formik, Form, input, ErrorMessage } from 'formik';
+import { Formik, Form, useField } from 'formik';
+import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 
-const Calc = () => (
-  <>
-    <Formik
-      initialValues={{ price: '', period: '', fee: '', rate: '' }}
-      validate={values => {
-        const errors = {};
-        if (!values.price) {
-          errors.price = 'Required';
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.price)
-        ) {
-          errors.price = 'Invalid price';
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form className='form'>
-          <label htmlFor='price' className='form__label'>Стоимость недвижимости
-            <input type='text' id='price' name='price' className='form__filed' />
-            <ErrorMessage name='price' component='div' />
-          </label>
-          <label htmlFor='fee' className='form__label'>Первоначальный взнос
-            <input type='text' id='fee' name='fee' className='form__filed' />
-          </label>
-          <ErrorMessage name='fee' component='div' />
-          <label htmlFor='period' className='form__label'>Срок кредита
-            <input type='text' id='period' name='period' className='form__filed' />
-          </label>
-          <ErrorMessage name='period' component='div' />
-          <label htmlFor='rate' className='form__label'>Процентная ставка
-            <input type='text' id='rate' name='rate' className='form__filed' />
-          </label>
-          <ErrorMessage name='rate' component='div' />
-          <button type='submit' disabled={isSubmitting} className='form__button form__button_type_save'>
-            Save
+const Input = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
+  const { id } = props;
+  return (
+    <>
+      <label htmlFor={id} className='form__label' type='number'>{label}</label>
+      <input className='form__filed' {...field} {...props} />
+      {meta.touched && meta.error ? (
+        <div className='form__error'>{meta.error}</div>
+      ) : null}
+    </>
+  );
+};
+
+const Calc = (props) => {
+  const { showResult } = props;
+
+  const calculate = (values) => {
+    const { price, fee, period, rate } = values;
+    const loan = price - fee;
+    const payment = loan * (rate / 1200 + (rate / 1200) / ((1 + rate / 1200) ** period - 1));
+    const salary = 5 * (payment / 3);
+    const overpayment = payment * period - price + fee;
+    return { loan, payment, salary, overpayment };
+  }
+
+  const submitForm = (values) => {
+    showResult(calculate(values));
+  }
+
+  const getCurrentValues = (values) => {
+    const valuesToCalculate = { ...values };
+    Object.keys(valuesToCalculate).forEach((item) => {
+      if (valuesToCalculate[item] === 0) {
+        valuesToCalculate[item] = 0;
+      }
+    });
+    return valuesToCalculate;
+  }
+
+  return (
+    <>
+      <Formik
+        setFieldValue
+        validateOnChange
+        initialValues={{ price: 0, fee: 0, period: 0, rate: 0 }}
+        validationSchema={Yup.object({
+          price: Yup.string().required('Это поле не должно быть пустым'),
+          period: Yup.string().required('Это поле не должно быть пустым'),
+          fee: Yup.string().required('Это поле не должно быть пустым'),
+          rate: Yup.string().required('Это поле не должно быть пустым')
+        })}
+        onSubmit={submitForm}
+      >
+        {({ handleChange, setFieldValue, values }) => (
+          <Form className='form'>
+            <Input
+              name='price'
+              id='price'
+              label='Стоимость недвижимости'
+              onChange={evt => {
+                handleChange(evt)
+                setFieldValue('price', evt.target.value)
+                submitForm(getCurrentValues(values));
+              }} />
+            <Input
+              name='fee'
+              id='fee'
+              label='Первоначальный взнос'
+              onChange={evt => {
+                handleChange(evt)
+                setFieldValue('fee', evt.target.value)
+                submitForm(getCurrentValues(values));
+              }} />
+            <ul className='form__percent'>
+              <li className='form__percent-rate'>10%</li>
+              <li className='form__percent-rate'>15%</li>
+              <li className='form__percent-rate'>20%</li>
+              <li className='form__percent-rate'>25%</li>
+              <li className='form__percent-rate'>30%</li>
+            </ul>
+            <Input
+              name='period'
+              id='period'
+              label='Срок кредита'
+              onChange={evt => {
+                handleChange(evt)
+                setFieldValue('period', evt.target.value)
+                submitForm(getCurrentValues(values));
+              }} />
+            <Input
+              name='rate'
+              id='rate'
+              label='Процентная ставка'
+              onChange={evt => {
+                handleChange(evt)
+                setFieldValue('rate', evt.target.value)
+                submitForm(getCurrentValues(values));
+              }} />
+            <button type='submit' className='form__button form__button_type_save'>
+              Save
            </button>
-          <button type='submit' disabled={isSubmitting} className='form__button form__button_type_clear'>
-            Clear
+            <button type='reset' className='form__button form__button_type_clear'>
+              Clear
            </button>
-        </Form>
-      )}
-    </Formik>
-  </>
-);
+          </Form>
+        )}
+      </Formik>
+    </>
+  )
+};
+
+Input.propTypes = {
+  label: PropTypes.string,
+  id: PropTypes.string,
+}
+
+Input.defaultProps = {
+  label: 0,
+  id: 0,
+}
+
+Calc.propTypes = {
+  showResult: PropTypes.func
+}
+
+Calc.defaultProps = {
+  showResult: () => { }
+}
 
 export default Calc;
