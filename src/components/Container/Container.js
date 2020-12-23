@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Calc from '../Calc/Calc';
 import Result from '../Result/Result';
 
-const Container = () => {
+const Container = ({ initialValues }) => {
   const [loan, setLoan] = useState(0);
   const [payment, setPayment] = useState(0);
   const [salary, setSalary] = useState(0);
@@ -25,6 +26,7 @@ const Container = () => {
   return (
     <div className='container'>
       <Calc
+        initialValues={initialValues}
         showResult={showResult}
         clearResult={clearResult} />
       <Result
@@ -35,5 +37,18 @@ const Container = () => {
     </div>
   )
 };
+
+Container.propTypes = {
+  initialValues: PropTypes.shape({
+    price: PropTypes.string,
+    fee: PropTypes.string,
+    period: PropTypes.string,
+    rate: PropTypes.string
+  }),
+}
+
+Container.defaultProps = {
+  initialValues: { price: '', fee: '', period: '', rate: '' },
+}
 
 export default Container;

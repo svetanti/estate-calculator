@@ -17,7 +17,6 @@ const defaultProps = {
 
 const Result = (props) => {
   const { payment, salary, overpayment, loan } = props;
-  console.log(payment);
   return (
     <div className='result'>
       <div>
