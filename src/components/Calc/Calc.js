@@ -8,7 +8,7 @@ const Input = ({ label, ...props }) => {
   const { id } = props;
   return (
     <>
-      <label htmlFor={id} className='form__label' type='number'>{label}</label>
+      <label htmlFor={id} className='form__label'>{label}</label>
       <input className='form__filed' {...field} {...props} />
       {meta.touched && meta.error ? (
         <div className='form__error'>{meta.error}</div>
@@ -18,7 +18,7 @@ const Input = ({ label, ...props }) => {
 };
 
 const Calc = (props) => {
-  const { showResult } = props;
+  const { showResult, clearResult } = props;
 
   const calculate = (values) => {
     const { price, fee, period, rate } = values;
@@ -26,6 +26,11 @@ const Calc = (props) => {
     const payment = loan * (rate / 1200 + (rate / 1200) / ((1 + rate / 1200) ** period - 1));
     const salary = 5 * (payment / 3);
     const overpayment = payment * period - price + fee;
+    console.log(`price: ${typeof price}`);
+    console.log(`fee: ${typeof fee}`);
+    console.log(`period: ${typeof period}`);
+    console.log(`rate: ${typeof rate}`);
+
     return { loan, payment, salary, overpayment };
   }
 
@@ -36,9 +41,7 @@ const Calc = (props) => {
   const getCurrentValues = (values) => {
     const valuesToCalculate = { ...values };
     Object.keys(valuesToCalculate).forEach((item) => {
-      if (valuesToCalculate[item] === 0) {
-        valuesToCalculate[item] = 0;
-      }
+      valuesToCalculate[item] = +valuesToCalculate[item];
     });
     return valuesToCalculate;
   }
@@ -48,7 +51,7 @@ const Calc = (props) => {
       <Formik
         setFieldValue
         validateOnChange
-        initialValues={{ price: 0, fee: 0, period: 0, rate: 0 }}
+        initialValues={{ price: '', fee: '', period: '', rate: '' }}
         validationSchema={Yup.object({
           price: Yup.string().required('Это поле не должно быть пустым'),
           period: Yup.string().required('Это поле не должно быть пустым'),
@@ -63,18 +66,18 @@ const Calc = (props) => {
               name='price'
               id='price'
               label='Стоимость недвижимости'
-              onChange={evt => {
+              onKeyUp={evt => {
                 handleChange(evt)
-                setFieldValue('price', evt.target.value)
+                setFieldValue('price', evt.target.value);
                 submitForm(getCurrentValues(values));
               }} />
             <Input
               name='fee'
               id='fee'
               label='Первоначальный взнос'
-              onChange={evt => {
+              onKeyUp={evt => {
                 handleChange(evt)
-                setFieldValue('fee', evt.target.value)
+                setFieldValue('fee', evt.target.value.toLocaleString('ru-RU', { maximumFractionDigits: 0 }))
                 submitForm(getCurrentValues(values));
               }} />
             <ul className='form__percent'>
@@ -88,24 +91,27 @@ const Calc = (props) => {
               name='period'
               id='period'
               label='Срок кредита'
-              onChange={evt => {
+              onKeyUp={evt => {
                 handleChange(evt)
-                setFieldValue('period', evt.target.value)
+                setFieldValue('period', evt.target.value.toLocaleString('ru-RU', { maximumFractionDigits: 0 }))
                 submitForm(getCurrentValues(values));
               }} />
             <Input
               name='rate'
               id='rate'
               label='Процентная ставка'
-              onChange={evt => {
+              onKeyUp={evt => {
                 handleChange(evt)
-                setFieldValue('rate', evt.target.value)
+                setFieldValue('rate', evt.target.value.toLocaleString('ru-RU', { maximumFractionDigits: 0 }))
                 submitForm(getCurrentValues(values));
               }} />
             <button type='submit' className='form__button form__button_type_save'>
               Save
            </button>
-            <button type='reset' className='form__button form__button_type_clear'>
+            <button
+              type='reset'
+              className='form__button form__button_type_clear'
+              onClick={clearResult}>
               Clear
            </button>
           </Form>
@@ -121,16 +127,18 @@ Input.propTypes = {
 }
 
 Input.defaultProps = {
-  label: 0,
-  id: 0,
+  label: '',
+  id: '',
 }
 
 Calc.propTypes = {
-  showResult: PropTypes.func
+  showResult: PropTypes.func,
+  clearResult: PropTypes.func
 }
 
 Calc.defaultProps = {
-  showResult: () => { }
+  showResult: () => { },
+  clearResult: () => { }
 }
 
 export default Calc;

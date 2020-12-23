@@ -9,16 +9,24 @@ const Container = () => {
   const [overpayment, setOverpayment] = useState(0);
 
   const showResult = (result) => {
-    setLoan(result.loan.toLocaleString('ru-RU', { maximumFractionDigits: 0 }));
-    setPayment(result.payment.toLocaleString('ru-RU', { maximumFractionDigits: 0 }));
-    setSalary(result.salary.toLocaleString('ru-RU', { maximumFractionDigits: 0 }));
-    setOverpayment(result.overpayment.toLocaleString('ru-RU', { maximumFractionDigits: 0 }));
+    setLoan(result.loan);
+    setPayment(result.payment);
+    setSalary(result.salary);
+    setOverpayment(result.overpayment);
+  }
+
+  const clearResult = () => {
+    setLoan(0);
+    setPayment(0);
+    setSalary(0);
+    setOverpayment(0);
   }
 
   return (
     <div className='container'>
       <Calc
-        showResult={showResult} />
+        showResult={showResult}
+        clearResult={clearResult} />
       <Result
         payment={payment}
         salary={salary}

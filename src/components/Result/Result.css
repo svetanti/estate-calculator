@@ -20,6 +20,7 @@
 }
 
 .result__values {
+  height: 24px;
   font-size: 18px;
   margin: 20px 0;
 }
