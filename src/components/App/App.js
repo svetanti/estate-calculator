@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ValuesContext from '../../contexts/ValuesContext';
 import Container from '../Container/Container';
 
 function App() {
@@ -19,10 +20,12 @@ function App() {
 
   console.log(initialValues)
   return (
-    <div className='app'>
-      <Container
-        initialValues={initialValues} />
-    </div>
+    <ValuesContext.Provider>
+      <div className='app'>
+        <Container
+          initialValues={initialValues} />
+      </div>
+    </ValuesContext.Provider>
   );
 }
 
