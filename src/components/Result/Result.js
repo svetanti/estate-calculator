@@ -1,22 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+import ResultContext from '../../contexts/ResultContext';
 
-const propTypes = {
-  payment: PropTypes.number,
-  salary: PropTypes.number,
-  overpayment: PropTypes.number,
-  loan: PropTypes.number
-};
+const Result = () => {
+  const { loan, payment, salary, overpayment } = useContext(ResultContext);
 
-const defaultProps = {
-  payment: 0,
-  salary: 0,
-  overpayment: 0,
-  loan: 0
-};
-
-const Result = (props) => {
-  const { payment, salary, overpayment, loan } = props;
   return (
     <div className='result'>
       <div>
@@ -51,8 +38,5 @@ const Result = (props) => {
     </div>
   );
 }
-
-Result.propTypes = propTypes;
-Result.defaultProps = defaultProps;
 
 export default Result;
