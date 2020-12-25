@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/estate-calculator/static/css/main.bbcf7ec0.chunk.css",
-    "main.js": "/estate-calculator/static/js/main.f64e8633.chunk.js",
-    "main.js.map": "/estate-calculator/static/js/main.f64e8633.chunk.js.map",
-    "runtime-main.js": "/estate-calculator/static/js/runtime-main.79928640.js",
-    "runtime-main.js.map": "/estate-calculator/static/js/runtime-main.79928640.js.map",
-    "static/js/2.b007dec1.chunk.js": "/estate-calculator/static/js/2.b007dec1.chunk.js",
-    "static/js/2.b007dec1.chunk.js.map": "/estate-calculator/static/js/2.b007dec1.chunk.js.map",
-    "index.html": "/estate-calculator/index.html",
-    "static/css/main.bbcf7ec0.chunk.css.map": "/estate-calculator/static/css/main.bbcf7ec0.chunk.css.map",
-    "static/js/2.b007dec1.chunk.js.LICENSE.txt": "/estate-calculator/static/js/2.b007dec1.chunk.js.LICENSE.txt"
+    "main.css": "./static/css/main.bbcf7ec0.chunk.css",
+    "main.js": "./static/js/main.f64e8633.chunk.js",
+    "main.js.map": "./static/js/main.f64e8633.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.4768f2d5.js",
+    "runtime-main.js.map": "./static/js/runtime-main.4768f2d5.js.map",
+    "static/js/2.b007dec1.chunk.js": "./static/js/2.b007dec1.chunk.js",
+    "static/js/2.b007dec1.chunk.js.map": "./static/js/2.b007dec1.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/main.bbcf7ec0.chunk.css.map": "./static/css/main.bbcf7ec0.chunk.css.map",
+    "static/js/2.b007dec1.chunk.js.LICENSE.txt": "./static/js/2.b007dec1.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.79928640.js",
+    "static/js/runtime-main.4768f2d5.js",
     "static/js/2.b007dec1.chunk.js",
     "static/css/main.bbcf7ec0.chunk.css",
     "static/js/main.f64e8633.chunk.js"
