@@ -1,18 +1,4 @@
 @import url('./components/App/App.css');
 @import url('./components/Container/Container.css');
-@import url('./components/Calc/Calc.css');
+@import url('./components/Calculator/Calculator.css');
 @import url('./components/Result/Result.css');
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

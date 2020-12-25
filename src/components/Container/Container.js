@@ -1,10 +1,10 @@
 import React from 'react';
-import Calc from '../Calc/Calc';
+import Calculator from '../Calculator/Calculator';
 import Result from '../Result/Result';
 
 const Container = () => (
   <div className='container'>
-    <Calc />
+    <Calculator />
     <Result />
   </div>
 );

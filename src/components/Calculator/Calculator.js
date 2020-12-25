@@ -5,7 +5,7 @@ import { getCurrentValues } from '../../utils/utils';
 import Input from '../Input/Input';
 import FormContext from '../../contexts/FormContext';
 
-const Calc = () => {
+const Calculator = () => {
   const { initialValues,
     feePercents,
     saveForm,
@@ -16,24 +16,26 @@ const Calc = () => {
 
   const handlePercentageChange = (percent) => {
     if (percentage !== percent) {
-      const newPercentage = percent;
-      setPercentage(newPercentage);
+      setPercentage(percent);
       return
     }
     setPercentage(0);
-  }
+  };
 
   const handleRecount = (evt, values, setFieldValue) => {
     const percent = +evt.target.id;
     const { price, fee } = values;
     if (price) {
-      setFieldValue('fee', Math.round(+price * percent / 100).toString());
-
+      const newFee = Math.round(+price * percent / 100).toString();
+      setFieldValue('fee', newFee);
+      submitForm(getCurrentValues({ ...values, fee: newFee }));
     }
     else if (!price && fee) {
-      setFieldValue('price', Math.round(+fee / percent * 100).toString());
+      const newPrice = Math.round(+fee / percent * 100).toString();
+      setFieldValue('price', newPrice);
+      submitForm(getCurrentValues({ ...values, newPrice }));
     }
-  }
+  };
 
   return (
     <>
@@ -48,76 +50,58 @@ const Calc = () => {
           fee: Yup.string().required('Это поле не должно быть пустым'),
           rate: Yup.string().required('Это поле не должно быть пустым')
         })}
-        onSubmit={submitForm}
-      >
+        onSubmit={submitForm}>
         {({ handleChange, setFieldValue, values }) => (
           <Form className='form'>
-            <Input
-              name='price'
-              id='price'
-              label='Стоимость недвижимости'
-              onKeyUp={evt => {
+            <Input name='price' id='price' label='Стоимость недвижимости'
+              onKeyUp={(evt) => {
                 handleChange(evt);
                 if (percentage !== 0) {
                   setFieldValue('fee', Math.round(+evt.target.value * percentage / 100).toString());
                 }
                 submitForm(getCurrentValues(values));
               }} />
-            <Input
-              name='fee'
-              id='fee'
-              label='Первоначальный взнос'
-              onKeyUp={evt => {
+            <Input name='fee' id='fee' label='Первоначальный взнос'
+              onKeyUp={(evt) => {
                 handleChange(evt);
                 if (percentage !== 0) {
                   setFieldValue('price', Math.round(+evt.target.value / percentage * 100).toString());
                 }
-                console.log(values);
                 submitForm(getCurrentValues(values));
               }} />
             <div className='form__percent'>
               {feePercents.map((item) =>
               (<button
                 key={item}
+                id={item}
                 type='button'
                 className={`${percentage === item && 'form__percent-rate_active'} form__percent-rate`}
-                id={item}
                 onClick={(evt) => {
                   handlePercentageChange(item);
-                  handleRecount(evt, values, setFieldValue);
+                  handleRecount(evt, values, setFieldValue, submitForm);
                 }}>
-                {`${item} \u0025`}</button>
-              ))}
+                {`${item} \u0025`}
+              </button>))}
             </div>
             <Input
-              name='period'
-              id='period'
-              label='Срок кредита'
+              name='period' id='period' label='Срок кредита'
               onKeyUp={evt => {
                 handleChange(evt);
-                setFieldValue('period', evt.target.value)
                 submitForm(getCurrentValues(values));
               }} />
-            <Input
-              name='rate'
-              id='rate'
-              label='Процентная ставка'
+            <Input name='rate' id='rate' label='Процентная ставка'
               onKeyUp={evt => {
                 handleChange(evt);
-                setFieldValue('rate', evt.target.value)
                 submitForm(getCurrentValues(values));
               }} />
             <button
-              type='button'
-              className='form__button form__button_type_save'
+              type='button' className='form__button form__button_type_save'
               onClick={() => {
                 saveForm(values);
               }}>
               Save
-           </button>
-            <button
-              type='reset'
-              className='form__button form__button_type_clear'
+            </button>
+            <button type='reset' className='form__button form__button_type_clear'
               onClick={clearForm}>
               Clear
            </button>
@@ -128,4 +112,4 @@ const Calc = () => {
   )
 };
 
-export default Calc;
+export default Calculator;

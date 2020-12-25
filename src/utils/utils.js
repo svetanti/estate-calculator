@@ -3,7 +3,7 @@ export const calculate = (values) => {
   const loan = price >= fee ? price - fee : 0;
   const payment = loan * (rate / 1200 + (rate / 1200) / ((1 + rate / 1200) ** period - 1));
   const salary = 5 * (payment / 3);
-  const overpayment = payment * period - price + fee;
+  const overpayment = price >= fee ? payment * period - price + fee : 0;
   return { loan, payment, salary, overpayment };
 };
 
